@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
   spec.description   = %q{Big Brother helps you watch and log creates, updates and destroys on your models}
   spec.summary       = %q{Log creates, updates and destroys on your models}
   spec.homepage      = ""
-  spec.license       = "MIT"
+  spec.license       = "AGPL"
 
   spec.files         = `git ls-files`.split($/)
   spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
