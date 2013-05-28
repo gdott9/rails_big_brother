@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = RailsBigBrother::VERSION
   spec.authors       = ["Guillaume DOTT"]
   spec.email         = ["guillaume.dott@lafourmi-immo.com"]
-  spec.description   = %q{TODO: Write a gem description}
-  spec.summary       = %q{TODO: Write a gem summary}
+  spec.description   = %q{Big Brother helps you watch and log creates, updates and destroys on your models}
+  spec.summary       = %q{Log creates, updates and destroys on your models}
   spec.homepage      = ""
   spec.license       = "MIT"
 
