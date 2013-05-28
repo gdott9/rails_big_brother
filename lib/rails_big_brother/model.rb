@@ -43,10 +43,16 @@ module RailsBigBrother
       end
 
       def big_brother_log(action, *args)
-        # TODO RailsBigBrother.format, RailsBigBrother.separator
-        Rails.logger.info "big_brother;#{RailsBigBrother.user};" <<
-          "#{RailsBigBrother.controller_info_string};" <<
-          "#{self.class.name};#{self.to_param};#{action};#{args.join(';')}"
+        Rails.logger.info RailsBigBrother.format %
+        {
+          big_brother: "big_brother",
+          user: RailsBigBrother.user,
+          controller_info: RailsBigBrother.controller_info_string,
+          class: self.class.name,
+          id: self.to_param,
+          action: action,
+          args: args.join(',')
+        }
       end
     end
   end

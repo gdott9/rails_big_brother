@@ -3,6 +3,14 @@ require "rails_big_brother/controller"
 require "rails_big_brother/model"
 
 module RailsBigBrother
+  def format=(value)
+    @format = value
+  end
+
+  def format
+    @format ||= "%<big_brother>s;%<user>s;%<controller_info>s;%<class>s;%<id>s;%<action>s;%<args>s"
+  end
+
   def user=(value)
     store[:user] = value
   end
