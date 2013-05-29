@@ -60,6 +60,15 @@ class Example < ActiveRecord::Base
 end
 ```
 
+### Log attributes new value on update
+
+You can choose to log the new value of an updated field with `verbose` :
+```ruby
+class Example < ActiveRecord::Base
+  big_brother_watch verbose: :third
+end
+```
+
 ## Contributing
 
 1. Fork it

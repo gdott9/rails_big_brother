@@ -11,7 +11,7 @@ module RailsBigBrother
         class_attribute :big_brother_options
         self.big_brother_options = {}
 
-        [:ignore, :only].each do |k|
+        [:ignore, :only, :verbose].each do |k|
           self.big_brother_options[k] = [options[k]].flatten.compact.map(&:to_s) if options.has_key?(k)
         end
 
@@ -34,7 +34,11 @@ module RailsBigBrother
         changed_fields = changed_fields & self.class.big_brother_options[:only] if self.class.big_brother_options.has_key?(:only)
 
         unless changed_fields.empty?
-          big_brother_log 'update', changed_fields.join(',')
+          changed_fields_string = changed_fields.map do |f|
+              f + (
+                self.class.big_brother_options[:verbose].include?(f) ? ":#{send(f)}" : '')
+            end.join(',')
+          big_brother_log 'update', changed_fields_string
         end
       end
 
