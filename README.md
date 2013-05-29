@@ -1,6 +1,6 @@
 # RailsBigBrother
 
-TODO: Write a gem description
+RailsBigBrother lets you log every create, update and destroy on any of your models.
 
 ## Installation
 
@@ -18,7 +18,47 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+Simply add this line in the model you want to log :
+```ruby
+big_brother_watch
+```
+
+### Define log format
+
+The default log format is :
+```ruby
+"%<big_brother>s;%<user>s;%<controller_info>s;%<class>s;%<id>s;%<action>s;%<args>s"
+```
+
+To define a new format, add this in an initializer :
+```ruby
+RailsBigBrother.format = "new_format"
+```
+
+### Choose events to log
+
+You can choose which events to log with the `on` option. For example :
+```ruby
+class Example < ActiveRecord::Base
+  big_brother_watch on: [:create, :destroy]
+end
+```
+
+### Select attributes to log
+
+You can specify attributes to monitor with `only` :
+```ruby
+class Example < ActiveRecord::Base
+  big_brother_watch only: [:first, :second]
+end
+```
+
+You can also ignore some attributes with `ignore` :
+```ruby
+class Example < ActiveRecord::Base
+  big_brother_watch ignore: :third
+end
+```
 
 ## Contributing
 
