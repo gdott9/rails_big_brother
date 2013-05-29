@@ -22,6 +22,8 @@ Or install it yourself as:
 RailsBigBrother.config do |config|
   config.format = "big_brother;%<user>s;%<controller_info>s;%<class>s;%<id>s;%<action>s;%<args>s"
   config.logger = Rails.logger
+  config.hash_to_s = proc { |hash| hash.map { |k,v| "#{k}:#{v}" }.join(',') }
+  config.array_to_s = proc { |array| array.join(',') }
 end
 ```
 

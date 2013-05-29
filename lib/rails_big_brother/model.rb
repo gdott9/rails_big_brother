@@ -34,12 +34,15 @@ module RailsBigBrother
         changed_fields = changed_fields & self.class.big_brother_options[:only] if self.class.big_brother_options.has_key?(:only)
 
         unless changed_fields.empty?
-          changed_fields_string = changed_fields.map do |f|
-              f + (
+          fields_hash = changed_fields.inject({}) do |hash, field|
+            hash[field] = (
                 self.class.big_brother_options.has_key?(:verbose) &&
-                self.class.big_brother_options[:verbose].include?(f) ? ":#{send(f)}" : '')
-            end.join(',')
-          big_brother_log 'update', changed_fields_string
+                self.class.big_brother_options[:verbose].include?(field) ? send(field).to_s : ''
+            )
+
+            hash
+          end
+          big_brother_log 'update', RailsBigBrother.hash_to_s.call(fields_hash)
         end
       end
 
@@ -55,7 +58,7 @@ module RailsBigBrother
           class: self.class.name,
           id: self.to_param,
           action: action,
-          args: args.join(',')
+          args: RailsBigBrother.array_to_s.call(args)
         }
       end
     end

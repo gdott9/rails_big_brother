@@ -4,7 +4,19 @@ require "rails_big_brother/model"
 
 module RailsBigBrother
   class << self
-    attr_writer :format, :logger
+    attr_writer :array_to_s, :hash_to_s, :format, :logger
+
+    def array_to_s
+      @array_to_s ||= Proc.new do |array|
+        array.join(',')
+      end
+    end
+
+    def hash_to_s
+      @hash_to_s ||= Proc.new do |hash|
+        hash.map { |k,v| "#{k}:#{v}" }.join(',')
+      end
+    end
 
     def logger
       @logger ||= Rails.logger
@@ -37,9 +49,9 @@ module RailsBigBrother
     def controller_info_string
       case controller_info
       when Array
-        controller_info.join(',')
+        array_to_s.call(controller_info)
       when Hash
-        controller_info.map { |k,v| "#{k}:#{v}" }.join(',')
+        hash_to_s.call(controller_info)
       else
         controller_info
       end
