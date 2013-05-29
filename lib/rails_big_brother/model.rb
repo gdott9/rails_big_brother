@@ -36,6 +36,7 @@ module RailsBigBrother
         unless changed_fields.empty?
           changed_fields_string = changed_fields.map do |f|
               f + (
+                self.class.big_brother_options.has_key?(:verbose) &&
                 self.class.big_brother_options[:verbose].include?(f) ? ":#{send(f)}" : '')
             end.join(',')
           big_brother_log 'update', changed_fields_string
