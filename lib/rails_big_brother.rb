@@ -3,48 +3,54 @@ require "rails_big_brother/controller"
 require "rails_big_brother/model"
 
 module RailsBigBrother
-  def format=(value)
-    @format = value
-  end
+  class << self
+    attr_writer :format, :logger
 
-  def format
-    @format ||= "%<big_brother>s;%<user>s;%<controller_info>s;%<class>s;%<id>s;%<action>s;%<args>s"
-  end
+    def logger
+      @logger ||= Rails.logger
+    end
 
-  def user=(value)
-    store[:user] = value
-  end
+    def format
+      @format ||= "big_brother;%<user>s;%<controller_info>s;%<class>s;%<id>s;%<action>s;%<args>s"
+    end
 
-  def user
-    store[:user]
-  end
+    def configure(&block)
+      yield(self) if block_given?
+    end
 
-  def controller_info=(value)
-    store[:controller_info] = value
-  end
+    def user=(value)
+      store[:user] = value
+    end
 
-  def controller_info
-    store[:controller_info]
-  end
+    def user
+      store[:user]
+    end
 
-  def controller_info_string
-    case controller_info
-    when Array
-      controller_info.join(',')
-    when Hash
-      controller_info.map { |k,v| "#{k}:#{v}" }.join(',')
-    else
-      controller_info
+    def controller_info=(value)
+      store[:controller_info] = value
+    end
+
+    def controller_info
+      store[:controller_info]
+    end
+
+    def controller_info_string
+      case controller_info
+      when Array
+        controller_info.join(',')
+      when Hash
+        controller_info.map { |k,v| "#{k}:#{v}" }.join(',')
+      else
+        controller_info
+      end
+    end
+
+    private
+
+    def store
+      Thread.current[:big_brother_log] ||= {}
     end
   end
-
-  private
-
-  def store
-    Thread.current[:big_brother_log] ||= {}
-  end
-
-  extend self
 end
 
 ActiveSupport.on_load(:active_record) do

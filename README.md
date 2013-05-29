@@ -16,23 +16,20 @@ Or install it yourself as:
 
     $ gem install rails_big_brother
 
+## Configuration
+
+```ruby
+RailsBigBrother.config do |config|
+  config.format = "big_brother;%<user>s;%<controller_info>s;%<class>s;%<id>s;%<action>s;%<args>s"
+  config.logger = Rails.logger
+end
+```
+
 ## Usage
 
 Simply add this line in the model you want to log :
 ```ruby
 big_brother_watch
-```
-
-### Define log format
-
-The default log format is :
-```ruby
-"%<big_brother>s;%<user>s;%<controller_info>s;%<class>s;%<id>s;%<action>s;%<args>s"
-```
-
-To define a new format, add this in an initializer :
-```ruby
-RailsBigBrother.format = "new_format"
 ```
 
 ### User and controller info

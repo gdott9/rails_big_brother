@@ -48,9 +48,8 @@ module RailsBigBrother
       end
 
       def big_brother_log(action, *args)
-        Rails.logger.info RailsBigBrother.format %
+        RailsBigBrother.logger.info RailsBigBrother.format %
         {
-          big_brother: "big_brother",
           user: RailsBigBrother.user,
           controller_info: RailsBigBrother.controller_info_string,
           class: self.class.name,
