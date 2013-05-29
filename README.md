@@ -35,6 +35,21 @@ To define a new format, add this in an initializer :
 RailsBigBrother.format = "new_format"
 ```
 
+### User and controller info
+
+To fill user and controller info, you need to define two methods in your `ApplicationController`
+```ruby
+def big_brother_user
+  ''
+end
+
+def big_brother_infos
+  {}
+end
+```
+`big_brother_user` must return a string.
+`big_brother_infos` can return a string, an array or a hash.
+
 ### Choose events to log
 
 You can choose which events to log with the `on` option. For example :
