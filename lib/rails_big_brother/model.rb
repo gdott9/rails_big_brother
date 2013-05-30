@@ -12,7 +12,9 @@ module RailsBigBrother
         self.big_brother_options = {}
 
         [:ignore, :only, :verbose].each do |k|
-          self.big_brother_options[k] = [options[k]].flatten.compact.map(&:to_s) if options.has_key?(k)
+          self.big_brother_options[k] = (
+            options[k] == true || options[k] == false ? options[k] : [options[k]].flatten.compact.map(&:to_s)
+          ) if options.has_key?(k)
         end
 
         after_create :log_create if !options[:on] || options[:on].include?(:create)
@@ -29,15 +31,23 @@ module RailsBigBrother
       end
 
       def log_update
+        options = self.class.big_brother_options
+
         changed_fields = self.changed
-        changed_fields = changed_fields - self.class.big_brother_options[:ignore] if self.class.big_brother_options.has_key?(:ignore)
-        changed_fields = changed_fields & self.class.big_brother_options[:only] if self.class.big_brother_options.has_key?(:only)
+        # Remove fields from :ignore array
+        changed_fields = changed_fields -
+          options[:ignore] if options.has_key?(:ignore) && options[:ignore].is_a?(Array)
+        # Keep only fields from :only array
+        changed_fields = changed_fields &
+          options[:only] if options.has_key?(:only) && options[:only].is_a?(Array)
 
         unless changed_fields.empty?
+          verbose = options[:verbose] if options.has_key?(:verbose)
+
           fields_hash = changed_fields.inject({}) do |hash, field|
             hash[field] = (
-                self.class.big_brother_options.has_key?(:verbose) &&
-                self.class.big_brother_options[:verbose].include?(field) ? send(field).to_s : ''
+              (verbose.is_a?(Array) && verbose.include?(field)) ||
+                verbose == true ? send(field).to_s : ''
             )
 
             hash

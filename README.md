@@ -82,6 +82,7 @@ class Example < ActiveRecord::Base
   big_brother_watch verbose: :third
 end
 ```
+`:verbose` option can take a boolean. If true, every updated fields values will be written in log file.
 
 ## Contributing
 
